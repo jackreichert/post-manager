@@ -167,6 +167,8 @@ App.Collections.Taxonomies = Backbone.Collection.extend({
 
 			success: function(collection, object, jqXHR) {
 				console.log(object);
+				var taxView = new App.Views.Taxonomies({ collection : collection });
+				jQuery('#wpbody-content nav #SelectTax').replaceWith(taxView.render().el);
 			},
 
 			error: function(jqXHR, statusText, error) {
@@ -177,6 +179,7 @@ App.Collections.Taxonomies = Backbone.Collection.extend({
 	},
 
 	parse: function(response) {
+		console.log(response);
 		// _.each(response, function(tax) {
 		// 	tax.terms = new App.Collections.Terms(tax.terms);
 		// });
