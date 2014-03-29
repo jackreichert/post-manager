@@ -6,3 +6,5 @@ This is a work in progress, a protype for a redesign of the posts manager in the
 I'd love feedback, input etc.
 
 Cheers!
+
+Inspiration: https://www.documentcloud.org/public/search/
