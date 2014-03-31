@@ -5,15 +5,15 @@ App.Collections.Types = Backbone.Collection.extend({
 
 	url: PM_Ajax.ajaxurl,
 
-	initialize: function() {
-		if(PM_Ajax.collections.types) {
+	initialize: function () {
+		if (PM_Ajax.collections.types) {
 			this.add(jQuery.parseJSON(PM_Ajax.collections.types));
 		} else {
 			this.queryTypes();
 		}
 	},
 
-	queryTypes: function() {
+	queryTypes: function () {
 		this.fetch({
 			data: {
 				action: 'ajax-PMgetData',
@@ -23,20 +23,20 @@ App.Collections.Types = Backbone.Collection.extend({
 
 			type: 'POST',
 
-			success: function(collection, object, jqXHR) {
+			success: function (collection, object, jqXHR) {
 				console.log(object);
 				var typesView = new App.Views.Types({ collection: collection });
 				jQuery('#wpbody-content nav #types').replaceWith(typesView.render().el);
 			},
 
-			error: function(jqXHR, statusText, error) {
+			error: function (jqXHR, statusText, error) {
 				console.log('error');
 				console.log(statusText.responseText);
 			}
 		});
 	},
 
-	parse: function(response) {
+	parse: function (response) {
 		return response.types;
 	}
 
@@ -50,15 +50,15 @@ App.Collections.Authors = Backbone.Collection.extend({
 
 	url: PM_Ajax.ajaxurl,
 
-	initialize: function() {
-		if(PM_Ajax.collections.authors) {
+	initialize: function () {
+		if (PM_Ajax.collections.authors) {
 			this.add(jQuery.parseJSON(PM_Ajax.collections.authors));
 		} else {
 			this.queryAuthors();
 		}
 	},
 
-	queryAuthors: function() {
+	queryAuthors: function () {
 		this.fetch({
 			data: {
 				action: 'ajax-PMgetData',
@@ -68,20 +68,20 @@ App.Collections.Authors = Backbone.Collection.extend({
 
 			type: 'POST',
 
-			success: function(collection, object, jqXHR) {
+			success: function (collection, object, jqXHR) {
 				console.log(object);
 				var authorsView = new App.Views.Authors({ collection: collection });
 				jQuery('#wpbody-content nav #authors').replaceWith(authorsView.render().el);
 			},
 
-			error: function(jqXHR, statusText, error) {
+			error: function (jqXHR, statusText, error) {
 				console.log('error');
 				console.log(statusText.responseText);
 			}
 		});
 	},
 
-	parse: function(response) {
+	parse: function (response) {
 		return response;
 	}
 
@@ -95,15 +95,15 @@ App.Collections.Posts = Backbone.Collection.extend({
 
 	url: PM_Ajax.ajaxurl,
 
-	initialize: function() {
-		if(PM_Ajax.collections.posts && window.App.State == 'initial') {
+	initialize: function () {
+		if (PM_Ajax.collections.posts && window.App.State === 'initial') {
 			this.add(jQuery.parseJSON(PM_Ajax.collections.posts));
 		} else {
 			this.queryPosts();
 		}
 	},
 
-	queryPosts: function() {
+	queryPosts: function () {
 		this.fetch({
 			data: {
 				action: 'ajax-PMgetData',
@@ -114,7 +114,7 @@ App.Collections.Posts = Backbone.Collection.extend({
 
 			type: 'POST',
 
-			success: function(collection, object, jqXHR) {
+			success: function (collection, object, jqXHR) {
 				console.log(object);
 				var postsView = new App.Views.Posts({ collection: collection });
 				jQuery('#wpbody-content section ul#posts').replaceWith(postsView.render().el);
@@ -125,14 +125,14 @@ App.Collections.Posts = Backbone.Collection.extend({
 				}
 			},
 
-			error: function(jqXHR, statusText, error) {
+			error: function (jqXHR, statusText, error) {
 				console.log('error');
 				console.log(statusText.responseText);
 			}
 		});
 	},
 
-	parse: function(response) {
+	parse: function (response) {
 		return response;
 	}
 
@@ -146,15 +146,21 @@ App.Collections.Taxonomies = Backbone.Collection.extend({
 
 	url: PM_Ajax.ajaxurl,
 
-	initialize: function() {
-		if(PM_Ajax.collections.taxonomies) {
+	initialize: function () {
+        this.on('add', this.getTerms, this);
+        
+		if (PM_Ajax.collections.taxonomies) {            
 			this.add(jQuery.parseJSON(PM_Ajax.collections.taxonomies));
 		} else {
 			this.queryTaxonomies();
 		}
 	},
+    
+    getTerms: function(tax) {
+        tax.set('terms', tax.attributes.terms);
+    },
 
-	queryTaxonomies: function() {
+	queryTaxonomies: function () {
 		this.fetch({
 			data: {
 				action: 'ajax-PMgetData',
@@ -165,26 +171,28 @@ App.Collections.Taxonomies = Backbone.Collection.extend({
 
 			type: 'POST',
 
-			success: function(collection, object, jqXHR) {
+			success: function (collection, object, jqXHR) {
 				console.log(object);
 				var taxView = new App.Views.Taxonomies({ collection : collection });
 				jQuery('#wpbody-content nav #SelectTax').replaceWith(taxView.render().el);
 			},
 
-			error: function(jqXHR, statusText, error) {
+			error: function (jqXHR, statusText, error) {
 				console.log('error');
 				console.log(statusText.responseText);
 			}
 		});
 	},
 
-	parse: function(response) {
+	parse: function (response) {
 		console.log(response);
-		// _.each(response, function(tax) {
-		// 	tax.terms = new App.Collections.Terms(tax.terms);
+		// _.each(response, function (tax) {
+		//    tax.terms = new App.Collections.Terms(tax.terms);
 		// });
 		//
 		return response;
 	}
 
 });
+
+

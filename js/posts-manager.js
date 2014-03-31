@@ -33,7 +33,14 @@ window.App = {
 		// load preloaded taxonomies
 		var taxCollection = new App.Collections.Taxonomies();
 		var taxView = new App.Views.Taxonomies({ collection : taxCollection });
-		jQuery('#wpbody-content nav #SelectTax').replaceWith(taxView.render().el);
+		jQuery('#wpbody-content nav #SelectTax').replaceWith( taxView.render().el );
+        
+        jQuery('#wpbody-content nav #taxonomies').html('');
+        taxCollection.each(function (tax) {
+            var termCollection = new App.Collections.Terms( tax.get('terms') );
+            var termView = new App.Views.Terms({ collection : termCollection });
+            jQuery('#wpbody-content nav #taxonomies').append( termView.render().el );
+        });
 
 		// load preloaded posts
 		var postsCollection = new App.Collections.Posts();

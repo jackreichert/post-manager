@@ -1,9 +1,9 @@
 // query model
 App.Models.Query = Backbone.Model.extend({
 	defaults: {
-		post_author		: '',
-		post_type 		: 'post',
-		posts_per_page 	: 20
+		post_author       : '',
+		post_type         : 'post',
+		posts_per_page    : 20
 	}
 });
 
@@ -51,6 +51,11 @@ App.Models.Term = Backbone.Model.extend({
 		taxonomy: 'category'
 	}
 });
+// Hmm not sure how to get this in the right file but load properly.
+App.Collections.Terms = Backbone.Collection.extend({
+    model: App.Models.Term
+});
+
 
 App.Models.Taxonomy = Backbone.Model.extend({
 	defaults: {
@@ -58,6 +63,6 @@ App.Models.Taxonomy = Backbone.Model.extend({
 		name: 'Category',
 		plural: 'Categories',
 		slug: 'category',
-		terms: [new App.Models.Term()]
+		terms: new App.Collections.Terms()
 	}
 });

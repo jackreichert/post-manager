@@ -110,13 +110,15 @@
         }
 
         foreach($taxonomies as $key => $taxonomy) {
+            if ( isset($term_model[$key]) && 0 < count($term_model[$key]) ) {
             $tax_model[] = array(
-                'assoc'    => $taxonomy->object_type,
-                'name'     => $taxonomy->labels->singular_name,
-                'plural'   => $taxonomy->labels->name,
-                'slug'     => $key,
-                'terms'    => isset($term_model[$key]) ? $term_model[$key] : array()
-            );
+                    'assoc'    => $taxonomy->object_type,
+                    'name'     => $taxonomy->labels->singular_name,
+                    'plural'   => $taxonomy->labels->name,
+                    'slug'     => $key,
+                    'terms'    => isset($term_model[$key]) ? $term_model[$key] : array()
+                );
+            }
         }
 
         return $tax_model;

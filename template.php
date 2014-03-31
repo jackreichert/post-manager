@@ -18,7 +18,7 @@
 			<div id="authors" class="tab-pane">
 				<ul></ul>
 			</div>
-			<div class="tab-pane taxonomy">
+			<div id="taxonomies">
 				<ul></ul>
 			</div>
 		</nav>

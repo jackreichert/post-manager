@@ -9,15 +9,20 @@ App.Views.App = Backbone.View.extend({
 	},
 
 	events: {
-		'click nav .authors.button': 'getAuthors'
+		'click nav .authors.button': 'toggleAuthors',
+        'click nav .taxonomy.button': 'toggleTypes'
 	},
 
-	getAuthors: function() {
-		jQuery('.tab-pane').toggle();
+	toggleAuthors: function(e) {
+        e.preventDefault();
+        jQuery('.tab-pane:not(#authors)').hide();
+        jQuery('#authors.tab-pane').toggle();
 	},
 
-	getTypes: function() {
-
+	toggleTypes: function(e) {
+        e.preventDefault();
+        jQuery('.tab-pane:not(' + jQuery(e.target).attr('href') + ')').hide();
+        jQuery( jQuery(e.target).attr('href') ).toggle();
 	}
 
 });
@@ -247,7 +252,8 @@ App.Views.Term = Backbone.View.extend({
 	template: App.Templates.term,
 
 	render: function() {
-		this.$el.html(this.template(this.model.toJSON()));
+		this.$el.html(this.template(this.model.toJSON()))
+            .attr('id', this.model.get('taxonomy') + '-' + this.model.get('term_id'));
 		return this;
 	}
 
@@ -257,8 +263,8 @@ App.Views.Term = Backbone.View.extend({
 App.Views.Terms = Backbone.View.extend({
 	tagName: 'ul',
 
-	id: 'SelectTerm',
-
+    className: 'tab-pane taxonomy',
+    
 	render: function() {
 		this.collection.each(this.addTerm, this);
 		return this;
@@ -266,6 +272,7 @@ App.Views.Terms = Backbone.View.extend({
 
 	addTerm: function(term) {
 		var termViews = new App.Views.Term({ model: term });
-		this.$el.append(termViews.render().el);
+		this.$el.append(termViews.render().el)
+            .attr('id', 'taxonomy-' + term.get('taxonomy'));
 	}
 });
